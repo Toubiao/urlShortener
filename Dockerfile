@@ -6,26 +6,26 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 
-ARG JAR_FILE
-RUN JAR_FILE=$(ls /app/target/*.jar) && echo "JAR_FILE=${JAR_FILE}" > .env
-RUN echo "LOG_PATH=./logs" >> .env
 
 # Run stage
 FROM openjdk:20-jdk-slim AS run
 WORKDIR /app
+ARG JAR_FILE=urlShortener-0.0.1-SNAPSHOT.jar
 
 # Copy jar from build stage
-COPY --from=build /app/target/${JAR_FILE} .
+COPY --from=build /app/target/urlShortener-0.0.1-SNAPSHOT.jar .
 
+RUN mkdir /app/logs
 # Create a directory for logs and mount as a volume
 VOLUME [ "/app/logs" ]
 
 # Security configuration
 RUN groupadd -r appuser && useradd -r -g appuser appuser
+RUN chown -R appuser:appuser /app/logs
 USER appuser
 
 # Expose application port
 EXPOSE 8080
 
 # Command to start the application
-CMD ["java", "-jar", "${JAR_FILE}"]
+CMD ["java", "-jar", "urlShortener-0.0.1-SNAPSHOT.jar"]

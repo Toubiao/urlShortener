@@ -1,3 +1,5 @@
+version: "3.8"
+
 networks:
   urlShortener-network:
     driver: bridge
@@ -5,11 +7,11 @@ networks:
 services:
   mongodb:
     image: mongo:latest
-    container_name: mongodb-urlshortener
+    container_name: ${mongo_container_name}
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=your_mongodb_password
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
       - mongodb-data:/data/db
     networks:
@@ -17,9 +19,9 @@ services:
 
   redis:
     image: redis:latest
-    container_name: redis-urlshortener
+    container_name: ${redis_container_name}
     restart: always
-    command: redis-server --requirepass your_redis_password
+    command: redis-server --requirepass ${SPRING_DATA_REDIS_PASSWORD}
     volumes:
       - redis-data:/data
     networks:
@@ -30,15 +32,15 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - JAR_FILE=urlShortener-0.0.1-SNAPSHOT.jar
-    container_name: backend-urlshortener
+        - JAR_FILE:${JAR_FILE}
+    container_name: ${spring_container_name}
     restart: always
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://admin:your_mongodb_password@mongodb:27017/urlShortener?authSource=admin
-      - SPRING_DATA_REDIS_HOST=redis
-      - SPRING_DATA_REDIS_PASSWORD=your_redis_password
+      - SPRING_DATA_MONGODB_URI=${SPRING_DATA_MONGODB_URI}
+      - SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST}
+      - SPRING_DATA_REDIS_PASSWORD=${SPRING_DATA_REDIS_PASSWORD}
     volumes:
-      - ./logs:/app/logs  # mount the logs directory on the host to the logs directory in the container
+      - spring-log-data:/app/logs
     ports:
       - 8080:8080
     depends_on:
@@ -50,3 +52,4 @@ services:
 volumes:
   mongodb-data:
   redis-data:
+  spring-log-data:
