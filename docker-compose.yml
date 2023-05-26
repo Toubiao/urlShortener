@@ -1,0 +1,48 @@
+networks:
+  urlShortener-network:
+    driver: bridge
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-urlshortener
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=your_mongodb_password
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - urlShortener-network
+
+  redis:
+    image: redis:latest
+    container_name: redis-urlshortener
+    restart: always
+    command: redis-server --requirepass your_redis_password
+    volumes:
+      - redis-data:/data
+    networks:
+      - urlShortener-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-urlshortener
+    restart: always
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:your_mongodb_password@mongodb:27017/urlShortener?authSource=admin
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PASSWORD=your_redis_password
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - urlShortener-network
+
+volumes:
+  mongodb-data:
+  redis-data:
