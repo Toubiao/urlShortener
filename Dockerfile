@@ -16,7 +16,6 @@ ARG JAR_FILE=urlShortener-0.0.1-SNAPSHOT.jar
 COPY --from=build /app/target/urlShortener-0.0.1-SNAPSHOT.jar .
 
 RUN mkdir /app/logs
-# Create a directory for logs and mount as a volume
 VOLUME [ "/app/logs" ]
 
 # Security configuration
