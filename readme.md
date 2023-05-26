@@ -13,6 +13,7 @@ Create an `.env` file in the root directory of the project to set up your enviro
 
 ```sh
 # MongoDB Configuration
+#MongoDB Configuration
 MONGO_INITDB_ROOT_USERNAME=admin
 MONGO_INITDB_ROOT_PASSWORD=your_mongodb_password
 
@@ -26,6 +27,10 @@ SPRING_DATA_REDIS_PASSWORD=your_redis_password
 
 # Docker build arguments
 JAR_FILE=urlShortener-0.0.1-SNAPSHOT.jar
+
+mongo_container_name=mongodb-urlshortener
+redis_container_name=redis-urlshortener
+redis_container_name=backend-urlshortener
 ```
 
 Please replace `your_mongodb_password` and `your_redis_password` with your chosen MongoDB and Redis passwords. Update the `JAR_FILE` variable if the JAR filename changes (e.g., if the application version is updated).
