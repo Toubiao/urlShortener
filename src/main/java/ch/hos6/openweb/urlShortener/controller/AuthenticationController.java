@@ -7,6 +7,7 @@ import ch.hos6.openweb.urlShortener.errorhandling.exception.UsernameAlreadyTaken
 import ch.hos6.openweb.urlShortener.service.UserService;
 import ch.hos6.openweb.urlShortener.utils.JwtTokenUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,7 @@ public class AuthenticationController {
      */
     @PostMapping("/login")
     @Operation(summary = "User login", description = "Authenticates the user and returns a JWT token")
+    @SecurityRequirement(name = "basicAuth")
     public ResponseEntity<Map<String, String>> login(Authentication authentication) {
         if(authentication == null){
             throw new AuthenticationCredentialsNotFoundException("No credential found");

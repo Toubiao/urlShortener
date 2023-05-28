@@ -60,6 +60,6 @@ docker-compose down
 
 This command stops all running services defined in `docker-compose.yml`.
 
-## Important Note
+## Swagger
 
-For security reasons, never commit the `.env` file to your version control system. Add `.env` to your `.gitignore` file to prevent accidental commits.
+Swagger-ui can be reach at this url :  `http://localhost:8080/doc/swagger-ui/index.html#/`

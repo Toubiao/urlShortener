@@ -34,6 +34,7 @@ public class UserServiceUnitTest {
     @Test
     public void testCreateUser_Success() throws UsernameAlreadyTakenException {
         UserDto userDto = new UserDto("test","password");
+        UserDto userDtoWithEncodedPassword = new UserDto("test","encodedPassword");
 
 
         User user = new User();
@@ -41,6 +42,7 @@ public class UserServiceUnitTest {
         user.setPassword("password");
 
         when(userMapper.DtoToUser(userDto)).thenReturn(user);
+        when(userMapper.userToDto(user)).thenReturn(userDtoWithEncodedPassword);
         when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
 

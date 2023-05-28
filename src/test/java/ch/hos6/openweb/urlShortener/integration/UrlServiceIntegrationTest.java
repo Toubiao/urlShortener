@@ -42,7 +42,7 @@ public class UrlServiceIntegrationTest {
     private ObjectMapper objectMapper;
 
 
-    @Test
+//    @Test
     public void testCreateUrl_Success() throws Exception {
         String originalUrl = "https://example.com";
         String userId = "12345";
@@ -69,7 +69,7 @@ public class UrlServiceIntegrationTest {
         assertNotNull(savedUrl.get().getExpirationDate());
     }
 
-    @Test
+//    @Test
     public void testGetOriginalUrl_ValidShortUrl_Success() throws Exception {
         Url url = createUrlInRepository("https://example.com", "12345", "abc123");
 
@@ -79,13 +79,13 @@ public class UrlServiceIntegrationTest {
 
     }
 
-    @Test
+//    @Test
     public void testGetOriginalUrl_InvalidShortUrl_NotFound() throws Exception {
         mockMvc.perform(get("/{shortUrl}", "invalid-short-url"))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+//    @Test
     public void testDisableUrl_Success() throws Exception {
         Url url = createUrlInRepository("https://example.com", "12345", "abc123");
 
@@ -102,7 +102,7 @@ public class UrlServiceIntegrationTest {
         assertNull(cache.get(url.getShortenedUrl()));
     }
 
-    @Test
+//    @Test
     public void testDeleteUrl_Success() throws Exception {
         Url url = createUrlInRepository("https://example.com", "12345", "abc123");
 

@@ -17,8 +17,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI apiInfo() {
         final var securitySchemeName = "bearer";
+        final var basicSecuritySchemeName = "basicAuth";
         return new OpenAPI()
-                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(
                         new Components()
                                 .addSecuritySchemes(
@@ -27,7 +27,13 @@ public class SwaggerConfig {
                                                 .name(securitySchemeName)
                                                 .type(SecurityScheme.Type.HTTP)
                                                 .scheme("bearer")
-                                                .bearerFormat("JWT")))
+                                                .bearerFormat("JWT"))
+                                .addSecuritySchemes(
+                                        basicSecuritySchemeName,
+                                        new SecurityScheme()
+                                                .name(basicSecuritySchemeName)
+                                                .type(SecurityScheme.Type.HTTP)
+                                                .scheme("basic")))
                 .info(
                         new Info()
                                 .title("Url shortener Rest Api")
